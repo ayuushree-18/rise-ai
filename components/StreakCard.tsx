@@ -74,7 +74,7 @@ export default function StreakCard() {
   }, []);
 
   return (
-    <section className="px-6 py-20">
+    <section className="fade-section px-6 py-20">
 
       <div className="mx-auto flex max-w-2xl items-center justify-between rounded-[40px] border border-orange-500/20 bg-orange-500/10 p-8 backdrop-blur-xl">
 

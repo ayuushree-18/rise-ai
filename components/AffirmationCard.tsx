@@ -11,33 +11,48 @@ interface Props {
 export default function AffirmationCard({ text }: Props) {
 
   const [liked, setLiked] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+
+    const existing =
+      JSON.parse(
+        localStorage.getItem("favorites") || "[]"
+      );
+
+    if (existing.includes(text)) {
+      setLiked(true);
+    }
+
+  }, [text]);
 
   function saveFavorite() {
-    
-    if (!mounted) return;
 
     try {
 
       const existing =
-        localStorage.getItem("favorites");
-
-      const favorites = existing
-        ? JSON.parse(existing)
-        : [];
-
-      if (!favorites.includes(text)) {
-        favorites.push(text);
-
-        localStorage.setItem(
-          "favorites",
-          JSON.stringify(favorites)
+        JSON.parse(
+          localStorage.getItem("favorites") || "[]"
         );
+
+      const alreadyExists =
+        existing.includes(text);
+
+      if (alreadyExists) {
+
+        setLiked(true);
+        return;
+
       }
+
+      const updated = [
+        ...existing,
+        text,
+      ];
+
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify(updated)
+      );
 
       setLiked(true);
 
@@ -50,6 +65,7 @@ export default function AffirmationCard({ text }: Props) {
   }
 
   return (
+
     <motion.div
       whileHover={{ scale: 1.02 }}
       initial={{ opacity: 0, y: 40 }}
@@ -74,25 +90,31 @@ export default function AffirmationCard({ text }: Props) {
       <div className="relative z-10 mt-10 flex gap-4">
 
         <button
-          onClick={() => {
-            saveFavorite();
-            setLiked(!liked);
-  }}
+          onClick={saveFavorite}
           className={`rounded-full p-4 transition ${
             liked
               ? "bg-pink-500 text-white"
               : "bg-white/10 hover:bg-white/20"
-  }`}
->
-          <Heart fill={liked ? "magenta" : "none"} />
+          }`}
+        >
+
+          <Heart
+            fill={liked ? "white" : "none"}
+          />
+
         </button>
 
-        <button className="rounded-full bg-white/10 p-4 transition hover:bg-white/20">
+        <button
+          className="rounded-full bg-white/10 p-4 transition hover:bg-white/20"
+        >
+
           <Share2 />
+
         </button>
 
       </div>
 
     </motion.div>
+
   );
 }

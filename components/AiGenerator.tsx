@@ -70,7 +70,7 @@ export default function AiGenerator() {
   }
 
   return (
-    <section className="px-6 py-20">
+    <section className="fade-section px-6 py-20">
 
       <div className="mx-auto max-w-3xl rounded-[40px] border border-white/10 bg-white/5 p-10 backdrop-blur-xl">
 
